@@ -1,3 +1,5 @@
+# 尚未尝试完成，担心内存不足够支持jenkins+k8s
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
