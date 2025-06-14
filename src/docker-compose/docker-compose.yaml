@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   site1:
-    image: houhongxu/site
+    image: registry.cn-hangzhou.aliyuncs.com/houhongxu/site:latest
     container_name: site1
     ports:
       - "81:80" # 映射主机的 81 端口到容器的 80 端口
@@ -13,7 +13,7 @@ services:
       - site-network
   
   site2:
-    image: houhongxu/site
+    image: registry.cn-hangzhou.aliyuncs.com/houhongxu/site:latest
     container_name: site2
     ports:
       - "82:80" # 映射主机的 82 端口到容器的 80 端口
@@ -24,7 +24,7 @@ services:
       - site-network
   
   site3:
-    image: houhongxu/site
+    image: registry.cn-hangzhou.aliyuncs.com/houhongxu/site:latest
     container_name: site3
     ports:
       - "83:80" # 映射主机的 83 端口到容器的 80 端口
