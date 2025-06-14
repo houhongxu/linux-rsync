@@ -1,26 +1,8 @@
-version: "2.1"
-
-# 目前不用3.8，因为deploy只能在docker swarm生效
+version: "3.8"
 
 services:
-  # jenkins:
-  #   image: jenkins/jenkins:lts
-  #   container_name: jenkins
-  #   ports:
-  #     - "90:8080" # 映射主机的 90 端口到容器的 8080 端口
-  #   volumes:
-  #     - jenkins_home:/var/jenkins_home # 持久化 Jenkins 数据
-  #     - shared_volume:/shared_volume
-  #   deploy:
-  #     resources:
-  #       limits:
-  #         cpus: "1.2" # 限制 CPU 核心数
-  #         memory: "3g" # 限制内存
-  #   networks:
-  #     - jenkins-network
-
   site1:
-    image: nginx:alpine
+    image: houhongxu/site
     container_name: site1
     ports:
       - "81:80" # 映射主机的 81 端口到容器的 80 端口
@@ -31,7 +13,7 @@ services:
       - site-network
   
   site2:
-    image: nginx:alpine
+    image: houhongxu/site
     container_name: site2
     ports:
       - "82:80" # 映射主机的 82 端口到容器的 80 端口
@@ -42,7 +24,7 @@ services:
       - site-network
   
   site3:
-    image: nginx:alpine
+    image: houhongxu/site
     container_name: site3
     ports:
       - "83:80" # 映射主机的 83 端口到容器的 80 端口
@@ -53,9 +35,7 @@ services:
       - site-network
 
 volumes:
-  jenkins_home:
   shared_volume:
 
 networks:
-  jenkins-network:
   site-network:
