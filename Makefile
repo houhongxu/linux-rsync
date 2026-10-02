@@ -13,10 +13,10 @@ MANIFEST_DIR := /var/lib/rancher/k3s/server/manifests
 KUBECTL := sudo -n k3s kubectl --request-timeout=15s
 
 .DEFAULT_GOAL := help
-.PHONY: help check-tools render-traefik dryrun-traefik dryrun-zeropress require-deploy apply-traefik apply-zeropress pull-nginx push push-nginx pull push-docker-compose pull-docker-compose
+.PHONY: help check-tools render-traefik dryrun-traefik dryrun-zeropress require-deploy apply-traefik apply-zeropress
 
 help:
-	@printf '%s\n' 'render-traefik: offline render using ACME_EMAIL (ignored local output)' 'dryrun-traefik / dryrun-zeropress: server object diff only; no deployment' 'apply-traefik / apply-zeropress: deploy only after approval, with CONFIRM_DEPLOY=yes' 'pull-nginx: read-only snapshot into .local/nginx/; existing repository config is preserved'
+	@printf '%s\n' 'render-traefik: offline render using ACME_EMAIL (ignored local output)' 'dryrun-traefik / dryrun-zeropress: server object diff only; no deployment' 'apply-traefik / apply-zeropress: deploy only after approval, with CONFIRM_DEPLOY=yes'
 
 check-tools:
 	@command -v "$(PYTHON)" >/dev/null || { echo 'python3 is required'; exit 1; }
@@ -43,15 +43,3 @@ apply-traefik: require-deploy render-traefik
 
 apply-zeropress: require-deploy check-tools
 	@$(SSH_SER) '$(KUBECTL) apply -f -' < $(ZEROPRESS_INGRESS)
-
-pull-nginx: check-tools
-	@umask 077; mkdir -p .local/nginx
-	@$(RSYNC) -ci --exclude-from=.rsync-exclude -e "$(RSYNC_RSH)" ser:/home/ubuntu/nginx/ubuntu.conf .local/nginx/ubuntu.conf
-
-push push-nginx:
-	@echo 'Broad uploads are disabled; review the server Nginx difference and use an explicit deployment target.'
-	@exit 1
-
-pull push-docker-compose pull-docker-compose:
-	@echo 'Legacy bulk/Compose targets are disabled; application manifests belong to the application repository.'
-	@exit 1
