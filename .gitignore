@@ -1,2 +1,19 @@
 .history
 node_modules
+
+# Local render output and secret material
+.local/
+**/.ssh/
+**/.kube/
+**/.env
+**/.env.*
+!**/.env.example
+**/.acme.sh/
+**/letsencrypt/
+**/secrets/
+**/acme*.json
+**/*.key
+**/*.pem
+**/*.p12
+**/*.pfx
+**/kubeconfig*

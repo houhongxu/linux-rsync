@@ -1,0 +1,15 @@
+.git/
+.local/
+.ssh/
+.kube/
+.env
+.env.*
+.acme.sh/
+letsencrypt/
+secrets/
+acme*.json
+*.key
+*.pem
+*.p12
+*.pfx
+kubeconfig*

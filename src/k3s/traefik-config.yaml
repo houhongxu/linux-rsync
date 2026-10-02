@@ -1,0 +1,27 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    deployment:
+      replicas: 1
+    updateStrategy:
+      type: Recreate
+    persistence:
+      enabled: true
+      storageClass: local-path
+      accessMode: ReadWriteOnce
+      size: 128Mi
+      path: /data
+    podSecurityContext:
+      fsGroup: 65532
+    certificatesResolvers:
+      zeropress:
+        acme:
+          email: REPLACE_WITH_CONTACT_EMAIL
+          caServer: https://acme-v02.api.letsencrypt.org/directory
+          storage: /data/acme.json
+          httpChallenge:
+            entryPoint: web
