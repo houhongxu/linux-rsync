@@ -9,8 +9,21 @@ spec:
       replicas: 1
     updateStrategy:
       type: Recreate
+    nodeSelector:
+      kubernetes.io/hostname: vm-12-8-ubuntu
+    tolerations:
+      - key: CriticalAddonsOnly
+        operator: Exists
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
+      - key: node-role
+        operator: Equal
+        value: control-plane
+        effect: NoSchedule
     persistence:
       enabled: true
+      existingClaim: traefik-cloud
       storageClass: local-path
       accessMode: ReadWriteOnce
       size: 128Mi
