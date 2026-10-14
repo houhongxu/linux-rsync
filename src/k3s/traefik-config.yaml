@@ -7,10 +7,44 @@ spec:
   valuesContent: |-
     deployment:
       replicas: 1
+      initContainers:
+        - name: acme-permissions
+          image: rancher/mirrored-library-traefik:3.7.4
+          command: ["/bin/sh", "-c", "test -f /data/acme.json && chmod 600 /data/acme.json"]
+          securityContext:
+            runAsUser: 65532
+            runAsGroup: 65532
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          resources:
+            requests: {cpu: 10m, memory: 16Mi}
+            limits: {cpu: 100m, memory: 64Mi}
+          volumeMounts:
+            - name: data
+              mountPath: /data
     updateStrategy:
       type: Recreate
+    nodeSelector:
+      kubernetes.io/hostname: vm-12-8-ubuntu
+    tolerations:
+      - key: CriticalAddonsOnly
+        operator: Exists
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
+      - key: node-role
+        operator: Equal
+        value: control-plane
+        effect: NoSchedule
+    service:
+      annotations:
+        svccontroller.k3s.cattle.io/tolerations: '[{"key":"node-role","operator":"Equal","value":"control-plane","effect":"NoSchedule"}]'
     persistence:
       enabled: true
+      existingClaim: traefik-cloud
       storageClass: local-path
       accessMode: ReadWriteOnce
       size: 128Mi

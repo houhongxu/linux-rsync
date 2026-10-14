@@ -1,0 +1,7 @@
+# Apply only the intended label; never replace the complete Node object.
+apiVersion: v1
+kind: Node
+metadata:
+  name: vm-12-8-ubuntu
+  labels:
+    svccontroller.k3s.cattle.io/enablelb: "true"
