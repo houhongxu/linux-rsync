@@ -19,7 +19,7 @@ Review the exact commit and changes, archive that full commit, and independently
 
 ## Rollback
 
-Wait for Helm to be idle, scale cloud Traefik Deployment to zero directly and confirm no writer remains before restoring the manifest. Restore old manifest/resolver/PVC reference and Windows placement; old PV remains Retain. Restore only the ServiceLB label added by this change if it was absent before. Keep both PVCs and new data; never delete either to roll back. Start exactly one old instance and verify HTTPS. If cloud ACME state has changed (for example renewal), reconcile the latest state before returning to the old copy. Restoring a manifest file alone does not delete Kubernetes objects; wait for actual Helm reconciliation. Old volumes/backups require a separate future retirement decision.
+Wait for Helm to be idle, scale cloud Traefik Deployment to zero directly and confirm no writer remains before restoring the manifest. Restore the old resolver/PVC reference and Windows placement using a prepared rollback manifest that RETAINS the non-root ACME permission initContainer and ServiceLB custom-taint annotation. A verbatim old manifest would reintroduce the mount-permission and cloud ServiceLB scheduling failures. The old PV remains Retain. Restore only the ServiceLB label added by this change if it was absent before. Keep both PVCs and new data; never delete either to roll back. Start exactly one old instance and verify HTTPS. If cloud ACME state has changed (for example renewal), reconcile the latest state before returning to the old copy. Restoring a manifest file alone does not delete Kubernetes objects; wait for actual Helm reconciliation. Old volumes/backups require a separate future retirement decision.
 
 ## Scheduling and capacity
 
