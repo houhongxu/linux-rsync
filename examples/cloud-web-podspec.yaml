@@ -1,0 +1,9 @@
+# PodSpec fragment for application Deployment.spec.template.spec.
+# Image, probes, resources and Service belong to the application repository.
+nodeSelector:
+  kubernetes.io/hostname: vm-12-8-ubuntu
+tolerations:
+  - key: node-role
+    operator: Equal
+    value: control-plane
+    effect: NoSchedule

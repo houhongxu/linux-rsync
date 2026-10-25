@@ -47,3 +47,7 @@ The non-secret deployment baseline was backed up at `/home/ubuntu/linux-rsync-ba
 For an ingress rollback, restore the saved configuration objects, allow Helm reconciliation and verify entrypoint readiness. K3s does not delete objects merely because a manifest file is removed; rollback requires explicitly restoring/deleting the HelmChartConfig resource as appropriate. Keep the ACME PVC and account data; do not uninstall shared Traefik.
 
 If retirement must be reversed, review port conflicts first, reinstall the removed host packages, and move the protected configuration/certificate trees back with root privileges. Restore renewal only for domains that are again owned and used. To resume Docker workloads, explicitly re-enable/start Docker service and socket, then review the retained container configuration before starting them. Removed build cache is recreated by subsequent builds. None of these rollback actions should replace the active Traefik ingress automatically.
+
+## Cloud entry placement
+
+See [migration and rollback](docs/cloud-ingress-migration.md). The Traefik template now targets the cloud node and a separately prepared `traefik-cloud` claim. Do not apply it before completing the documented storage migration. Application scheduling examples remain outside the live synchronization tree.

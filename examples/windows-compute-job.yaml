@@ -1,0 +1,19 @@
+# Example only: replace image before applying. Never included in cluster sync.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: example-compute
+spec:
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      nodeSelector:
+        kubernetes.io/hostname: win-hhx
+      containers:
+        - name: compute
+          image: REPLACE_WITH_REVIEWED_IMAGE_DIGEST
+          resources:
+            requests: {cpu: "1", memory: 1Gi}
+            limits: {cpu: "2", memory: 2Gi}
